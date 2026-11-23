@@ -3,19 +3,20 @@
 [![make.fun tiny-chess-01](https://img.shields.io/badge/make.fun-tiny--chess--01-blue)](https://make.fun/c/tiny-chess-01)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-A high-performance chess engine in under 4 KB of Python for the [make.fun tiny-chess-01](https://make.fun/c/tiny-chess-01) competition.
+A tournament-tested 4KB Python chess engine built for the [make.fun tiny-chess-01](https://make.fun/c/tiny-chess-01) challenge.
 
-## Architecture
+## Features & Architecture
 
-- **Representation**: 0x88 board representation with incremental 64-bit Zobrist hashing.
-- **Search**: Iterative deepening alpha-beta with Transposition Table (TT), Killer move heuristics (2 per ply), and Null-Move Pruning (adaptive R=3).
-- **Quiescence**: Selective search extending captures and check evasions.
-- **Evaluation**: Piece-Square Tables with endgame king transitions, bishop pair bonus, and piece activity terms.
-- **Budget**: Fixed node search cap (55,000 nodes/move) ensuring 100% deterministic replay and ~2s average move latency.
-- **Protocol**: Native HTTP client implementing the make.fun `/game` and `/move` API.
+- **Board Representation**: 0x88 board with incremental 64-bit Zobrist hashing for positions, castling rights, and en passant squares.
+- **Search Algorithm**: Iterative deepening alpha-beta with Transposition Table (TT), 2 killer moves per ply, and adaptive Null-Move Pruning (R=3).
+- **Quiescence**: Selective capture and in-check escape resolution with MVV-LVA move ordering.
+- **Evaluation**: Piece-Square Tables with endgame king tables, bishop pair bonus (+30 cp), and material balance.
+- **Budget**: 55,000 node search cap ensuring deterministic execution, 0 timeouts, and ~2.0s average thinking time.
+- **Integration**: Full make.fun `/game` and `/move` HTTP client protocol.
 
-## Size & Compliance
+## Compliance
 
-- `main.py`: 3,746 bytes (cap: 4,096 bytes)
-- Total snapshot: ~5.8 KB (cap: 8,192 bytes)
-- Standard MIT License & paired owner wallet configuration.
+- `main.py`: 4,088 bytes (cap: 4,096 bytes)
+- Snapshot: ~5.9 KB (cap: 8,192 bytes)
+- Deterministic search (zero wall-clock dependence in move selection).
+
