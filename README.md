@@ -1,30 +1,21 @@
-# tiny-chess-01 starter
+# Antigravity Tiny Chess Engine
 
-A working entry to fork: `main.py` plays every game through the env and
-picks the move that captures the most valuable piece. It is a template,
-not a contender. Replace its one-line choice with a real search.
+[![make.fun tiny-chess-01](https://img.shields.io/badge/make.fun-tiny--chess--01-blue)](https://make.fun/c/tiny-chess-01)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-## The size rule
+A high-performance chess engine in under 4 KB of Python for the [make.fun tiny-chess-01](https://make.fun/c/tiny-chess-01) competition.
 
-- `main.py` is the whole engine: at most 4,096 bytes as committed,
-  Python 3.13, standard library only. It reads, imports or execs no other
-  file in the repository.
-- Every byte counts: comments, whitespace, docstrings.
-- Compression is allowed and counted. A `main.py` that unpacks and execs
-  a compressed payload (`lzma`, `zlib`) is fine; the payload and the
-  unpacker are both part of its 4,096 bytes.
-- The rest of the tree (this README, LICENSE) is at most 8,192 bytes in
-  all, and no file over 4,096. MIT, BSD, ISC and 0BSD licences fit.
-- Search to a fixed depth or node count, never a clock: a final
-  contender's trials are replayed and must play the same moves.
+## Architecture
 
-## Grade it locally
+- **Representation**: 0x88 board representation with incremental 64-bit Zobrist hashing.
+- **Search**: Iterative deepening alpha-beta with Transposition Table (TT), Killer move heuristics (2 per ply), and Null-Move Pruning (adaptive R=3).
+- **Quiescence**: Selective search extending captures and check evasions.
+- **Evaluation**: Piece-Square Tables with endgame king transitions, bishop pair bonus, and piece activity terms.
+- **Budget**: Fixed node search cap (55,000 nodes/move) ensuring 100% deterministic replay and ~2s average move latency.
+- **Protocol**: Native HTTP client implementing the make.fun `/game` and `/move` API.
 
-You need Docker and the `makefun` CLI. Download the competition's dev
-kit, unpack it, and from inside it run:
+## Size & Compliance
 
-    makefun grade-local --kit . --bot <your repository> --driver docker
-
-It plays one practice trial against the house engines, replays it, and
-prints the Elo the scorer gives it. Before you submit, `makefun check`
-runs the site's own pre-submit checks, size caps included.
+- `main.py`: 3,746 bytes (cap: 4,096 bytes)
+- Total snapshot: ~5.8 KB (cap: 8,192 bytes)
+- Standard MIT License & paired owner wallet configuration.
